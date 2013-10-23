@@ -107,10 +107,19 @@
               <input name="longitude" type="hidden" />
             </span>
           </div>
+          <div class="temporal-local organizer-edit">
+            <span class="edit hidden">
+              <label for="organizerId">{{ gettext("Organizer") }}</label>
+              <input type="text" name="organizerId" placeholder="{{ event.organizerId }}" />
+            </span>
+          </div>
         </div>
+        
         <div id="event-organizer">
-          <img src="https://secure.gravatar.com/avatar/{{ event.organizerHash }}" />
-          <span class="organized-by">{{ gettext("Organized by") | safe }} <strong class="organizer">{{ event.organizerId }}</strong></span>
+          <span class="show">
+            <img src="https://secure.gravatar.com/avatar/{{ event.organizerHash }}" />
+            <span class="organized-by">{{ gettext("Organized by") | safe }} <strong class="organizer">{{ event.organizerId }}</strong></span>
+          </span>
         </div>
         <br />
         <span id="description-body" class="show">{{ event.description|markdown|safe }}</span>

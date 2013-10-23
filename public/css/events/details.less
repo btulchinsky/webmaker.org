@@ -145,6 +145,9 @@ body#events.details {
         }
     }
     form#edit-event {
+        label {
+            text-align: right
+        }
         input {
             border: 1px solid #ccc;
             padding-left: 4px;
@@ -157,6 +160,10 @@ body#events.details {
         }
         input[name="address"] {
             width: 21em;
+        }
+        input[name="organizerId"] {
+            font-size: 14px; 
+            margin: 0 4px;       
         }
         .upload {
             display: inline-block;
@@ -180,6 +187,10 @@ body#events.details {
                 }
             }
         }
+        .organizer-edit {
+            left: 148px;
+            margin-top: 4px;
+        }
         input[type="file"] { .hidden; }
 
         input[name="registerLink"] {
@@ -190,5 +201,6 @@ body#events.details {
             width: 5em;
             margin: 0px 10px;
         }
+
     }
 }
