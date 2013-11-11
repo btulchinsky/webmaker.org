@@ -9,33 +9,115 @@
 .webmaker-nav-container {
   border-top: 1px solid @lightgrey;
   position: relative;
-  height: 90px;
   background: #FFF;
   overflow: visible;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
   z-index: 4;
+  .clearfix;
+  display: block;
+  @media only screen and (min-width: @width-large) {
+    height: 90px;
+  }
 }
 
 .user-info {
-  margin-top: 20px;
+  float: right;
+  margin-top: 10px;
+  @media only screen and (min-width: @width-large) {
+    position: relative;
+    margin-top: 30px;
+  }
+  a {
+    color: inherit;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  li {
+    border: none;
+    margin: 0;
+  }
+  .more-btn {
+    line-height: 30px;
+    border: 1px solid #CCC;
+    margin-left: 3px;
+    color: #555;
+    a:hover {
+      text-decoration: none;
+      color: #000;
+    }
+    @media(min-width: @width-medium) {
+      display: none;
+    }
+  }
+}
+
+#webmaker-nav iframe.include-frame {
+  top: 0;
+  @media(max-width: @width-small) {
+    display: none;
+  }
+}
+
+// The login page shouldn't have two iframes visible.
+// TODO: Fix SSO so that two login buttons are possible
+#login #webmaker-nav iframe.include-frame {
+  display: none;
+}
+
+.webmaker-nav .user img {
+  top: 2px;
+  left: 6px;
 }
 
 #tabzilla {
   position: absolute;
   top: 0;
   right: 5px;
+  display: none;
+  background: url(/img/tab.png) top left no-repeat;
+  background-size: 150px;
+  @media(min-width: @width-large) {
+    display: block;
+  }
 }
 
 #logo {
-  margin-top: 10px;
-  margin-left: -18px;
+  height: 46px;
+  width: 46px;
+  margin-left: 0;
+  margin-top: 2px;
+  overflow: hidden;
+  display: inline-block;
+  line-height: 46px;
+  img {
+    height: 46px;
+    display: block;
+  }
+  @media(min-width: @width-medium) {
+    width: 225px;
+  }
+  @media(min-width: @width-large) {
+    margin-top: 10px;
+    img {
+      width: 100%;
+      height: auto;
+    }
+    height: auto;
+    margin-left: -18px;
+  }
 }
 
 // Contains SSO and main navigation
 .user-nav-container {
   position: relative;
   height: 100%;
-  margin-right: 150px;
+  margin: 0;
+  .clearfix;
+  display: block;
+  @media(min-width: @width-large) {
+    margin-right: 150px;
+  }
 }
 
 li.lang-picker:first-child {
@@ -43,8 +125,10 @@ li.lang-picker:first-child {
 }
 
 #lang-picker {
-  margin: -7px 15px 0 0;
-  border-color: transparent;
+  @media(min-width: @width-twoblocks) {
+    border-color: transparent;
+  }
+  padding: 0 0 0 1em;
   &:hover {
     border-color: #CCC;
   }
@@ -66,8 +150,8 @@ li.lang-picker:first-child {
 
   .ui-smedium {
     width: auto;
-    margin-left: 5px;
   }
+
   > .icon {
     background: none;
     color: #555;
@@ -95,6 +179,18 @@ li.lang-picker:first-child {
     font-family: 'Open Sans Light', sans-serif;
     -webkit-font-smoothing: antialiased;
     margin-right: @gutter * @unit;
+
+    @media (min-width: @width-twoblocks) {
+      .width(4);
+    }
+    @media (min-width: @width-large) {
+      .width(6);
+    }
+
+    padding: 0 20px;
+    @media (min-width: @width-twoblocks) {
+      padding: 0;
+    }
 
     h1, p {
       display: inline;
@@ -136,6 +232,12 @@ li.lang-picker:first-child {
   z-index: 3;
   padding: 0.5em 1em 1em;
   .border-box;
+  .width(2);
+
+  display: none;
+  @media(min-width: @width-threeblocks) {
+    display: block;
+  }
 
   label {
     color: #FFF;
@@ -181,9 +283,26 @@ li.lang-picker:first-child {
   border-radius: 50em;
 }
 
-.user {
+.user-info > li:last-child {
+  border-right: 1px solid #DDD;
+}
+
+.webmaker-nav .user {
   margin: 0;
-  font-weight: bold;
+  display: inline;
+  border: 1px solid transparent;
+  &:hover {
+    border-color: #CCC;
+  }
+  .ui-selected {
+    min-width: 100px;
+    padding-right: 20px;
+    .icon {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+    }
+  }
 }
 
 .arrow {
@@ -547,54 +666,13 @@ footer {
 }
 
 /*********************************************************
-* MOBILE (640px wide, retina)
+* MOBILE / TABLET
 */
-@media only screen and (max-width: 640px) {
+
+@media only screen and (max-width: @width-large) {
   body {
     overflow-x: hidden;
     width: 100%;
-  }
-
-  header {
-    .webmaker-nav-container {
-      height: 65px;
-    }
-    .user-info {
-      display: none;
-    }
-    #logo {
-      width: 150px;
-      margin-left: 0;
-      display: inline-block;
-      img {
-        width: 100%;
-      }
-    }
-    .user-nav-container {
-      margin: 0;
-    }
-    .nav-list {
-      padding: 0;
-      position: relative;
-      right: auto;
-      left: auto;
-      text-align: center;
-      .border-box;
-      width: 100%;
-
-      li {
-        font-size: 1em;
-        &:first-child:hover {
-          background: none;
-          color: @blue;
-          box-shadow: none;
-          .makenav-hover {
-            display: none;
-          }
-        }
-      }
-    }
-
   }
 
   .gallery-header .header h1 {
@@ -694,15 +772,11 @@ footer {
   .border-box;
 }
 
-
 /*********************************************************
-* MOBILE (320px wide, retina)
+* MOBILE
 */
-@media only screen and (max-width: 320px) {
+@media only screen and (max-width: @width-medium) {
 
-  #tabzilla {
-    display: none;
-  }
   #footer-actions {
     left: 0;
   }

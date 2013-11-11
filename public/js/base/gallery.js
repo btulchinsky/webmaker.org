@@ -1,27 +1,27 @@
-define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
-  function ($, nunjucks, UI, moment, Make, localized) {
+define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized', 'masonry'],
+  function ($, nunjucks, UI, moment, Make, localized, Masonry) {
 
     var DEFAULT_LIMIT = 12;
     var lang = $('html').attr('lang');
     moment.lang(localized.langToMomentJSLang(lang));
-    var Gallery = function(options) {
+    var Gallery = function (options) {
       var self = this;
 
       options = options || {};
       options.mainGallery = options.mainGallery || '.main-gallery';
       options.itemSelector = options.itemSelector || 'div.make';
       options.gutterSize = options.gutterSize || '.gutter-sizer';
-      options.hiddenClass = options.hiddenClass || 'packery-hide';
+      options.hiddenClass = options.hiddenClass || 'gallery-hide';
       options.makeView = options.makeView || 'make-teach.html';
       options.makeUrl = options.makeUrl || $('body').data('endpoint') || 'https://makeapi.webmaker.org';
       options.defaultSearch = options.defaultSearch || 'webmaker:recommended';
 
       var banner = document.querySelector(options.banner),
-          mainGallery = document.querySelector(options.mainGallery),
-          $mainGallery = $(mainGallery),
-          $loadMore = $('.load-more'),
-          $loading = $('.loading-cat'),
-          $emptyMessage = $('.no-makes-found');
+        mainGallery = document.querySelector(options.mainGallery),
+        $mainGallery = $(mainGallery),
+        $loadMore = $('.load-more'),
+        $loading = $('.loading-cat'),
+        $emptyMessage = $('.no-makes-found');
 
       var limit = $mainGallery.data('limit') || DEFAULT_LIMIT;
       var totalHits = $mainGallery.data('total-hits');
@@ -36,8 +36,8 @@ define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
       // MakeAPI
 
       var make = new Make({
-          apiURL: options.makeUrl
-        }),
+        apiURL: options.makeUrl
+      }),
         searchOptions = {
           limit: limit,
           tags: options.defaultSearch,
@@ -45,22 +45,30 @@ define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
           page: 1
         };
 
-      // Packery
-      var packery = new Packery(mainGallery, {
+      // Masonry
+      var masonry = new Masonry(mainGallery, {
         itemSelector: options.itemSelector,
         gutter: options.gutterSize
       });
 
       // Which items are large on the front page?
-      var FRONTPAGE_LARGE = [2,3];
+      var FRONTPAGE_LARGE = [2, 3];
 
       // Nunjucks
       // Todo - nunjucks middleware
       var makeView = 'make-templates/' + options.makeView;
       nunjucks.env = new nunjucks.Environment(new nunjucks.HttpLoader('/views', true));
 
+      // Making a custom filter to use it for the client-side l10n
+      // Using this filter will help reduce the number of adding
+      // variables to the global nunjucks variable.
+      // The usage will be "{{ "some string" | gettext }}"
+      nunjucks.env.addFilter('gettext', function (data) {
+        return localized.get(data);
+      });
+
       function onLoadUI() {
-        packery.off('layoutComplete', onLoadUI);
+        masonry.off('layoutComplete', onLoadUI);
         $loading.fadeOut();
         $('.' + options.hiddenClass).removeClass(options.hiddenClass);
 
@@ -82,8 +90,8 @@ define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
         e.preventDefault();
         e.stopPropagation();
         var $this = $(this),
-            makeID = $this.data("make-id"),
-            method;
+          makeID = $this.data("make-id"),
+          method;
 
         if ($this.hasClass("icon-heart")) {
           method = "/unlike";
@@ -93,10 +101,10 @@ define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
         $.post(method, {
           makeID: makeID,
           _csrf: $("meta[name='X-CSRF-Token']").attr("content")
-        }, function(res) {
+        }, function (res) {
           var newLen = res.likes.length,
-              $count = $this.parent().parent().find(".like-count"),
-              $text = $this.parent().parent().find(".like-text");
+            $count = $this.parent().parent().find(".like-count"),
+            $text = $this.parent().parent().find(".like-text");
 
           $this.toggleClass("icon-heart icon-heart-empty");
           $count.html(newLen);
@@ -107,10 +115,10 @@ define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
           } else {
             $text.html(localized.get("Like-n"));
           }
-        }).fail(function(res) {
+        }).fail(function (res) {
           if (res.status === 401) {
             window.location.replace(window.location.protocol + "//" + window.location.host +
-            "/" + localized.getCurrentLang() + "/login");
+              "/" + localized.getCurrentLang() + "/login");
           } else {
             // already like/unliked, update UI to reflect.
             $this.toggleClass("icon-heart icon-heart-empty");
@@ -119,13 +127,14 @@ define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
       }
 
       function resultsCallback(err, data, total) {
+
         var isStickySearch = (searchOptions.tagPrefix === options.stickyPrefix),
-            itemString = '',
-            frag = document.createElement('div'),
-            makerID = $("meta[name='maker-id']").attr("content"),
-            allItems,
-            i,
-            l;
+          itemString = '',
+          frag = document.createElement('div'),
+          makerID = $("meta[name='maker-id']").attr("content"),
+          allItems,
+          i,
+          l;
 
         $loading.hide();
 
@@ -163,37 +172,27 @@ define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
               data[i].size = "large";
             }
             itemString += nunjucks.env.render(makeView, {
-              make: data[i],
-              noLike: localized.get("Like-0"),
-              oneLike: localized.get("Like-1"),
-              moreLikes: localized.get("Like-n"),
-              CreatedBy: localized.get("Created By"),
-              makeWord: localized.get("make"),
-              by: localized.get("by"),
-              created: localized.get("created"),
-              Remix: localized.get("Remix"),
-              Details: localized.get("Details"),
-              Anonymous: localized.get("Anonymous")
+              make: data[i]
             });
           }
         }
         frag.innerHTML = itemString;
         allItems = frag.querySelectorAll(options.itemSelector);
         $(allItems)
-        .find(".make-like-toggle")
-        .off("click")
-        .on("click", likeClickCallback);
+          .find(".make-like-toggle")
+          .off("click")
+          .on("click", likeClickCallback);
         $mainGallery.append(allItems);
-        packery.appended(allItems);
-        packery.layout();
+        masonry.appended(allItems);
+        masonry.layout();
         onLoadUI();
       }
 
       // Export
       self.searchOptions = searchOptions;
-      self.packery = packery;
+      self.masonry = masonry;
       self.make = make;
-      self.search = function(opts) {
+      self.search = function (opts) {
         opts = opts || {};
         if (opts.sticky) {
           searchOptions.tagPrefix = options.stickyPrefix;
@@ -204,22 +203,22 @@ define(['jquery', 'nunjucks', 'base/ui', 'moment', 'makeapi', 'localized'],
         make.find(searchOptions).then(resultsCallback);
       };
 
-      // Set up packery initially
+      // Set up masonry initially
 
-      packery.on('layoutComplete', onLoadUI);
+      masonry.on('layoutComplete', onLoadUI);
       if (banner) {
-        packery.stamp(banner);
+        masonry.stamp(banner);
       }
-      packery.layout();
+      masonry.layout();
 
-      localized.ready(function() {
+      localized.ready(function () {
         $(".make-like-toggle")
-        .off("click")
-        .on("click", likeClickCallback);
+          .off("click")
+          .on("click", likeClickCallback);
       });
 
       // Set up load more
-      $loadMore.click(function() {
+      $loadMore.click(function () {
         searchOptions.page++;
         $loading.show();
         self.search({

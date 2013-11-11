@@ -1,9 +1,9 @@
 {
   "name": "webmaker.org",
-  "version": "0.0.167",
+  "version": "0.0.182",
   "private": true,
   "scripts": {
-    "test": "grunt",
+    "test": "grunt validate",
     "postinstall": "./node_modules/.bin/bower install"
   },
   "repository": {
@@ -22,10 +22,11 @@
     "helmet": "0.0.11",
     "knox": "0.8.x",
     "less-middleware": "0.1.12",
-    "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.8",
+    "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.11",
     "mapquest": "0.0.1",
     "markdown": "0.4.x",
     "moment": "2.2.1",
+    "mox-server": "https://github.com/Pomax/mox-server/archive/master.tar.gz",
     "mysql": "2.0.x",
     "newrelic": "0.11.4",
     "noxmox": "0.2.x",
@@ -33,13 +34,14 @@
     "sequelize": "2.0.x",
     "sqlite3": "2.1.17",
     "uuid": "1.4.x",
-    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.3.tar.gz",
-    "webmaker-loginapi": "https://github.com/mozilla/node-webmaker-loginapi/tarball/v0.1.11",
+    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.9.tar.gz",
+    "webmaker-loginapi": "https://github.com/mozilla/node-webmaker-loginapi/tarball/v0.1.18",
     "webmaker-postalservice": "https://github.com/mozilla/node-webmaker-postalservice/tarball/v0.2.5"
   },
   "devDependencies": {
     "grunt": "0.4.1",
     "grunt-recess": "0.3.3",
-    "grunt-contrib-jshint": "0.4.3"
+    "grunt-contrib-jshint": "0.7.1",
+    "grunt-jsbeautifier": "0.2.2"
   }
 }

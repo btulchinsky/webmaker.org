@@ -3,13 +3,14 @@
   "dependencies": {
     "font-awesome": "3.2.1",
     "jquery": "2.0.3",
-    "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.8",
+    "makeapi-client": "https://github.com/mozilla/makeapi-client/tarball/v0.5.11",
+    "masonry": "3.1.2",
     "moment": "2.2.1",
-    "nunjucks": "git://github.com/jlongster/nunjucks.git#0fc9622f3471d67058e431f765bc45d928d23a61",
+    "nunjucks": "0.1.10",
     "persona-btn": "~0.0.6",
     "requirejs": "2.1.8",
     "text": "2.0.9",
-    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.3.tar.gz",
-    "webmaker-ui": "0.0.10"
+    "webmaker-i18n": "https://github.com/mozilla/node-webmaker-i18n/archive/v0.2.9.tar.gz",
+    "webmaker-ui": "0.0.12"
   }
 }

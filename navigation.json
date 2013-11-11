@@ -3,11 +3,17 @@
     "id": "explore",
     "title": "Explore",
     "icon": "icon-random",
+    "defaultUrl": "",
     "pages": [
+      {
+        "id": "teachtheweb",
+        "title": "Home",
+        "url": ""
+      },
       {
         "id": "index",
         "title": "Gallery",
-        "url": ""
+        "url": "gallery"
       },
       {
         "id": "tools",
@@ -20,6 +26,7 @@
     "id": "make",
     "title": "Make",
     "icon": "icon-hand-up",
+    "defaultUrl": "starter-makes",
     "pages": [
       {
         "id": "starterMakes",
@@ -28,20 +35,20 @@
       },
       {
         "id": "popcorn",
-        "title": "Videos with Popcorn",
-        "url": "https://popcorn.webmaker.org",
+        "title": "Multimedia with Popcorn",
+        "url": "https://popcorn.webmaker.org/{{localeInfo.lang}}",
         "external": "true"
       },
       {
         "id": "thimble",
         "title": "Webpages with Thimble",
-        "url": "https://thimble.webmaker.org",
+        "url": "https://thimble.webmaker.org/{{localeInfo.lang}}",
         "external": "true"
       },
       {
         "id": "xray",
         "title": "Remixes with X-Ray Goggles",
-        "url": "https://goggles.webmaker.org",
+        "url": "https://goggles.webmaker.org/{{localeInfo.lang}}",
         "external": "true"
       }
     ]
@@ -50,6 +57,7 @@
     "id": "teach",
     "title": "Teach",
     "icon": "icon-book",
+    "defaultUrl": "teach",
     "pages": [
       {
         "id": "teach",
@@ -60,6 +68,11 @@
         "id": "teach-templates",
         "title": "Resource Templates",
         "url": "teach-templates"
+      },
+      {
+        "id": "standard",
+        "title": "WebLiteracyStandard",
+        "url": "standard"
       }
     ]
   },
@@ -67,6 +80,7 @@
     "id": "events",
     "title": "Events",
     "icon": "icon-map-marker",
+    "defaultUrl": "events",
     "pages": [
       {
         "id": "events",
@@ -84,7 +98,14 @@
     "id": "info",
     "title":  "Info",
     "icon": "icon-info",
+    "defaultUrl": "about",
     "pages": [
+      {
+        "id": "blog",
+        "title": "Blog",
+        "url": "https://blog.webmaker.org",
+        "external": "true"
+      },
       {
         "id": "about",
         "title": "About Us",
@@ -94,6 +115,11 @@
         "id": "getinvolved",
         "title": "Get Involved",
         "url": "getinvolved"
+      },
+      {
+	"id": "search",
+	"title": "Search",
+	"url": "search"
       },
       {
         "id": "help",
